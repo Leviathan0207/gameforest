@@ -1,0 +1,55 @@
+.tag-selected{
+    background-color: #55acee !important;
+    color: white !important;
+}
+.badge .close {
+    margin-left: .25rem;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    background: black;
+    padding: 0 2.5px;
+    color: white;
+    border-radius: 50%;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.tag-apply:hover{
+    cursor: pointer;
+}
+
+.release-entry:first-child{
+    border-top: 1px solid #e1e4e8;
+}
+
+.release-entry .first-col p{
+    margin-bottom: 0px;
+    text-align: right;
+}
+
+.release-entry .first-col p:first-child{
+    padding-bottom: 16px;
+}
+
+.release-entry .first-col .badge{
+    padding: 3px 4px;
+    font-weight: normal;
+    text-transform: none;
+}
+.release-entry .first-col, .release-entry .second-col{
+    padding: 24px 16px;
+}
+
+.release-entry .second-col{
+    border-left: 2px solid #e1e4e8;
+}
+
+.release-entry .release-caption{
+    font-size: 32px;
+    color: #0366d6;
+}
+
+.release-entry .release-patch{
+    font-size:12px;
+    font-weight: 700;
+}
