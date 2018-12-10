@@ -21,6 +21,7 @@ class UsersFixture extends TestFixture
         'Email' => ['type' => 'string', 'length' => 100, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'Username' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'Password' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'token' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['ID'], 'length' => []],
             'Email' => ['type' => 'unique', 'columns' => ['Email'], 'length' => []],
@@ -44,7 +45,8 @@ class UsersFixture extends TestFixture
                 'ID' => 1,
                 'Email' => 'Lorem ipsum dolor sit amet',
                 'Username' => 'Lorem ipsum dolor sit amet',
-                'Password' => 'Lorem ipsum dolor sit amet'
+                'Password' => 'Lorem ipsum dolor sit amet',
+                'token' => 'Lorem ipsum dolor sit amet'
             ],
         ];
         parent::init();

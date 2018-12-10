@@ -66,6 +66,11 @@ class UsersTable extends Table
             ->requirePresence('Password', 'create')
             ->notEmpty('Password');
 
+        $validator
+            ->scalar('token')
+            ->maxLength('token', 255)
+            ->allowEmpty('token');
+
         return $validator;
     }
 

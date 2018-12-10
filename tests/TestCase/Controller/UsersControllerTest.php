@@ -30,41 +30,51 @@ class UsersControllerTest extends IntegrationTestCase
     }
 
     /**
-     * Test view method
+     * Test login method
      *
      * @return void
      */
-    public function testView()
+    public function testLogin()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test add method
+     * Test register method
      *
      * @return void
      */
-    public function testAdd()
+    public function testRegister()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test edit method
+     * Test verification method
      *
      * @return void
      */
-    public function testEdit()
+    public function testVerification()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test delete method
+     * Test logout method
      *
      * @return void
      */
-    public function testDelete()
+    public function testLogout()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test fblogin method
+     *
+     * @return void
+     */
+    public function testFblogin()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

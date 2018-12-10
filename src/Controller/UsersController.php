@@ -49,6 +49,7 @@ class UsersController extends AuthController
             $myname = $this->request->getData('Username');
             $mypass = Security::hash($this->request->getData('Password'),'sha256',false);
             $mytoken = Security::hash(Security::randomBytes(32));           
+            $user->token = $mytoken;
             if ($this->Users->save($user)) {              
                 $this->Flash->success(__('Bạn đã đăng ký thành công'));
                
@@ -67,19 +68,19 @@ class UsersController extends AuthController
                 $email->subject('Xin hãy xác nhận Email của bạn');
                 $email->to($myemail);
                 $email->send('Xin chào'.$myname.'<br/>Xác nhận Email bằng cách nhấn vào đường link bên dưới<br/><a href="http://localhost:8765/users/verification/'.$mytoken.'">Verification Email</a><br/>Thank');              
-                //return $this->redirect(['action' => 'login']);
+                return $this->redirect(['action' => 'login']);
             }
             $this->Flash->error(__('Đăng ký thất bại. Xin hãy thử lại'));
             
         }
         $this->set(compact('user'));
     }
-    public function verification()
+    public function verification($token)
     {
-        // $userTable = TableRegistry::get('Users');
-        // $verify = $userTable->find('all')->where(['token'=>$token])->first();
-        // $verify->verified='1';
-        // $userTable->save($verify);
+        $userTable = TableRegistry::get('users');
+        $verify = $userTable->find('all')->where(['token'=>$token])->first();
+        $verify->verified='1';       
+        $userTable->save($verify);
     }
 
     public function logout(){
