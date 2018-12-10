@@ -31,17 +31,12 @@
                 </div>
                 <div class="nav navbar-right">
                     <ul>
-                        <?php if($loggedIn): ?>
+                        <?php if($this->request->getSession()->read('Auth.User')): ?>
                             <li class="hidden-xs-down">
-                                <?= $this->Html->link('Đăng xuất', ['controller' => 'Users', 'action' => 'logout']) ?>
+                                <?= $this->Element('Page/user_loggedin') ?>
                             </li>
                         <?php else: ?>
-                            <li class="hidden-xs-down">
-                                <?= $this->Html->link('Đăng nhập', ['controller' => 'Users', 'action' => 'login']) ?>
-                            </li>
-                            <li class="hidden-xs-down">
-                                <?= $this->Html->link('Đăng ký', ['controller' => 'Users', 'action' => 'register']) ?>
-                            </li> 
+                            <?= $this->Element('Page/user_nonlogin') ?>
                         <?php endif;?>          
                         <li><a data-toggle="search"><i class="fa fa-search"></i></a></li>
                     </ul>

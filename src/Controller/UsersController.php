@@ -54,9 +54,8 @@ class UsersController extends AppController
         $this->Flash->success('Thoát thành công');
         return $this->redirect($this->Auth->logout());
     }
-    public function beforeFilter($event){
-        $this->Auth->allow(['register']);
-    }
+
+    
     /**
      * View method
      *

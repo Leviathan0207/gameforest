@@ -43,7 +43,7 @@ class AppController extends Controller
         $this->loadComponent('Flash');
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
-        ]);
+        ]);      
         $this->loadComponent('Auth',[
             'authenticate'=>[
                 'Form'=>[
@@ -52,7 +52,8 @@ class AppController extends Controller
                         'password'=>'Password'
                         ]
                     ]
-                ],
+                ]
+                ,
             'loginAction'=>[
                 'controller'=>'Users',
                 'action'=>'login'
@@ -65,10 +66,7 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
     }
-    public function beforeRender($event){
-        if($this->request->session()->read('Auth.User')){
-            $this->set('loggedIn',true);
-        }else $this->set('loggedIn',false);
+    public function beforeFilter($event){
+        $this->Auth->allow();      
     }
-
 }
