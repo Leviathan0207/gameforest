@@ -85,6 +85,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     //USER CONTROLLER
     $routes->connect('/dang-nhap', ['controller' => 'Users', 'action' => 'login']);
     $routes->connect('/dang-ky', ['controller' => 'Users', 'action' => 'register']);
+    $routes->connect('/dang-nhap-facebook', ['controller' => 'Users', 'action' => 'fblogin']);
 
     //FORUM CONTROLLER
     $routes->connect('/dien-dan', ['controller' => 'Forum', 'action' => 'index']);

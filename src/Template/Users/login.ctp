@@ -1,5 +1,5 @@
 <!-- main -->
-<section class="bg-image player p-y-70" style="background-image: url('https://img.youtube.com/vi/1GWRDuL04-Q/maxresdefault.jpg');" data-property="{videoURL:'1GWRDuL04-Q',containment:'self', stopMovieOnBlur:false, showControls: false, realfullscreen: true, showYTLogo: false, quality: 'highres',autoPlay:true,loop:true,opacity:1}">
+<section id="login_sec" class="bg-image player p-y-70" style="background-image: url('https://img.youtube.com/vi/1GWRDuL04-Q/maxresdefault.jpg');" data-property="{videoURL:'1GWRDuL04-Q',containment:'self', stopMovieOnBlur:false, showControls: false, realfullscreen: true, showYTLogo: false, quality: 'highres',autoPlay:true,loop:true,opacity:1}">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -10,7 +10,7 @@
                     </div>
                     <div class="card-block">
                         <?= $this->Form->create(); ?>
-                            <a class="btn btn-social btn-facebook btn-block btn-icon-left" href="" role="button"><i class="fa fa-facebook"></i> Connect with Facebook</a>
+                            <a class="btn btn-social btn-facebook btn-block btn-icon-left" href="" role="button" @click="fbLogin"><i class="fa fa-facebook"></i> Connect with Facebook</a>
                             <div class="divider">
                                 <span>or</span>
                             </div>
@@ -46,9 +46,52 @@
     </div>
 </section>
 <!-- /main -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '717282398659064',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v3.2'
+    });
+      
+    FB.AppEvents.logPageView();   
+      
+  };
 
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         $(".player").mb_YTPlayer();
+
+        new Vue({
+            el: '#login_sec',
+            methods: {
+                fbLogin: function(event){
+                    event.preventDefault();  
+                    FB.login(function(response){
+                        var auth = response.authResponse;
+                        console.log(auth);
+                        if(auth != null){
+                            $.ajax({
+                                url: '<?= $this->Url->build(['controller' => 'Users', 'action' => 'fblogin']) ?>',
+                                method: 'post',
+                                data: { 'access-token': auth.accessToken },                        
+                                success: function(res){
+                                    console.log(res);
+                                }
+                            })
+                        }
+                    },{scope: 'email'});                     
+                }
+            }
+        });
     })
 </script>

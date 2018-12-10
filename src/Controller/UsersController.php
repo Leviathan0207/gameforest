@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Facebook\Facebook;
 
 /**
  * Users Controller
@@ -54,72 +55,43 @@ class UsersController extends AppController
         $this->Flash->success('Thoát thành công');
         return $this->redirect($this->Auth->logout());
     }
+    public function fblogin()
+    {
 
-    
-    /**
-     * View method
-     *
-     * @param string|null $id User id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    // public function view($id = null)
-    // {
-    //     $user = $this->Users->get($id, [
-    //         'contain' => []
-    //     ]);
+        $this->autoRender = false;
 
-    //     $this->set('user', $user);
-    // }
+        if ($this->request->is(['post'])) {
 
-    // /**
-    //  * Add method
-    //  *
-    //  * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-    //  */
-    
+            $fb = new Facebook([
+                'app_id' => '717282398659064',
+                'app_secret' => '78be8ede900c509fd637e97a52232667',
+                'default_graph_version' => 'v3.2',
+            ]);
 
-    // /**
-    //  * Edit method
-    //  *
-    //  * @param string|null $id User id.
-    //  * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-    //  * @throws \Cake\Network\Exception\NotFoundException When record not found.
-    //  */
-    // public function edit($id = null)
-    // {
-    //     $user = $this->Users->get($id, [
-    //         'contain' => []
-    //     ]);
-    //     if ($this->request->is(['patch', 'post', 'put'])) {
-    //         $user = $this->Users->patchEntity($user, $this->request->getData());
-    //         if ($this->Users->save($user)) {
-    //             $this->Flash->success(__('The user has been saved.'));
+            $data = $this->request->getData();
 
-    //             return $this->redirect(['action' => 'index']);
-    //         }
-    //         $this->Flash->error(__('The user could not be saved. Please, try again.'));
-    //     }
-    //     $this->set(compact('user'));
-    // }
+            try {
+                $response = $fb->get('/me?fields=email,name,first_name,last_name,picture.type(large)', $data['access-token']);
+            } catch (\Facebook\Exceptions\FacebookResponseException $e) {
+            // When Graph returns an error
+                echo 'Graph returned an error: ' . $e->getMessage();
+                exit;
+            } catch (\Facebook\Exceptions\FacebookSDKException $e) {
+            // When validation fails or other local issues
+                echo 'Facebook SDK returned an error: ' . $e->getMessage();
+                exit;
+            }
 
-    // /**
-    //  * Delete method
-    //  *
-    //  * @param string|null $id User id.
-    //  * @return \Cake\Http\Response|null Redirects to index.
-    //  * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-    //  */
-    // public function delete($id = null)
-    // {
-    //     $this->request->allowMethod(['post', 'delete']);
-    //     $user = $this->Users->get($id);
-    //     if ($this->Users->delete($user)) {
-    //         $this->Flash->success(__('The user has been deleted.'));
-    //     } else {
-    //         $this->Flash->error(__('The user could not be deleted. Please, try again.'));
-    //     }
+            $me = $response->getGraphUser();
+            $user = [
+                'fbid' => $me->getId(),
+                'name' => $me->getName(),
+                'email' => $me->getField('email'),
+                'picture' => $me->getField('picture')
+            ];
 
-    //     return $this->redirect(['action' => 'index']);
-    // }
+            $this->Auth->setUser($user);
+        }
+    }
+
 }
