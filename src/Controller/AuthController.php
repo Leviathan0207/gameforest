@@ -5,13 +5,13 @@ use Cake\Controller\Controller;
 use Cake\Event\Event;
 
 class AuthController extends Controller{
-
     public function initialize()
     {
-        parent::initialize();
+        //parent::initialize();
+        $this->loadComponent('Flash');
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
-        ]);
+        ]);      
         $this->loadComponent('Auth', [
             'authenticate' => [
                 'Form' => [
@@ -26,5 +26,8 @@ class AuthController extends Controller{
                 'action' => 'login'
             ]
         ]);
+    }
+    public function beforeFilter($event){
+        $this->Auth->allow(['register','verification']);
     }
 }

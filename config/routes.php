@@ -86,6 +86,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/dang-nhap', ['controller' => 'Users', 'action' => 'login']);
     $routes->connect('/dang-ky', ['controller' => 'Users', 'action' => 'register']);
     $routes->connect('/dang-nhap-facebook', ['controller' => 'Users', 'action' => 'fblogin']);
+    $routes->connect('/users/verification', ['controller' => 'Users', 'action' => 'verification']);
 
     //FORUM CONTROLLER
     $routes->connect('/dien-dan', ['controller' => 'Forum', 'action' => 'index']);
@@ -106,12 +107,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ->setPatterns([
             'user' => '[a-zA-Z0-9-_]+',
         ])
-        ->setPass(['user']);
-    //TEST CONTROLLER
-    $routes->connect('/testAdd', ['controller' => 'Users', 'action' => 'add']);
-    $routes->connect('/testLogin', ['controller' => 'Users', 'action' => 'view']);
-    $routes->connect('/testEdit', ['controller' => 'Users', 'action' => 'edit']);
-    $routes->connect('/testIndex', ['controller' => 'Users', 'action' => 'index']);
+        ->setPass(['user']); 
     /**
      * Connect catchall routes for all controllers.
      *

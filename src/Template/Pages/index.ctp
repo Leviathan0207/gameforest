@@ -25,7 +25,6 @@
             },
             methods: {
                 getCarouselData() {
-
                     this.CarouselData.push({
                         id: 1,
                         title: "For Honor: The Berserker",
