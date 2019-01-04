@@ -28,6 +28,7 @@ class UsersController extends AuthController
         $this->set(compact('users'));
     }
     public function login(){
+        
         if($this->request->is(['post'])){
             $user = $this->Auth->identify();
             if($user){
@@ -47,12 +48,12 @@ class UsersController extends AuthController
             //Email
             $myemail = $this->request->getData('Email');
             $myname = $this->request->getData('Username');
-            $mypass = Security::hash($this->request->getData('Password'),'sha256',false);
+            // $mypass = Security::hash($this->request->getData('Password'),'sha256',false);
+    
             $mytoken = Security::hash(Security::randomBytes(32));           
             $user->token = $mytoken;
             if ($this->Users->save($user)) {              
-                $this->Flash->success(__('Bạn đã đăng ký thành công'));
-               
+                $this->Flash->success(__('Bạn đã đăng ký thành công'));         
                 Email::configTransport('gmail', [
                     'host' => 'smtp.gmail.com',
                     'port' => 587,
@@ -87,6 +88,7 @@ class UsersController extends AuthController
         $this->Flash->success('Thoát thành công');
         return $this->redirect($this->Auth->logout());
     }
+
     public function fblogin()
     {
         $this->autoRender = false;

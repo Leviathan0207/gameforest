@@ -108,6 +108,8 @@ Router::scope('/', function (RouteBuilder $routes) {
             'user' => '[a-zA-Z0-9-_]+',
         ])
         ->setPass(['user']); 
+    //TEST CONTROLLER
+    $routes->connect('/test', ['controller' => 'Posts', 'action' => 'index']);
     /**
      * Connect catchall routes for all controllers.
      *

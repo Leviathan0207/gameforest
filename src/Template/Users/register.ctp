@@ -1,4 +1,10 @@
 <!-- main -->
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\User $user
+ */
+?>
 <section class="bg-image bg-image-sm" style="background-image: url('https://img.youtube.com/vi/BhTkoDVgF6s/maxresdefault.jpg');">
     <div class="overlay"></div>
     <div class="container">

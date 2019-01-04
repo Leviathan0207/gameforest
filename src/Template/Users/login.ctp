@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-sm-8 col-md-4 mx-auto">
+            <?= $this->Flash->render() ?>
                 <div class="card m-b-0">
                     <div class="card-header">
                         <h4 class="card-title"><i class="fa fa-sign-in"></i> Login to your account</h4>
