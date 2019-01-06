@@ -68,8 +68,7 @@ class PostsTable extends Table
         $validator
             ->scalar('PostContent')
             ->maxLength('PostContent', 1000)
-            ->requirePresence('PostContent', 'create')
-            ->notEmpty('PostContent');
+            ->allowEmpty('PostContent');
 
         $validator
             ->scalar('PostDesc')
@@ -80,6 +79,11 @@ class PostsTable extends Table
             ->scalar('PostThread')
             ->maxLength('PostThread', 100)
             ->allowEmpty('PostThread');
+
+        $validator
+            ->scalar('PostSlug')
+            ->maxLength('PostSlug', 255)
+            ->allowEmpty('PostSlug');
 
         return $validator;
     }

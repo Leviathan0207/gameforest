@@ -1,8 +1,16 @@
 <?= $this->Element('Page/breadcrumbs') ?>
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Post[]|\Cake\Collection\CollectionInterface $posts
+ */
+?>
+
 <section class="p-t-40">
     <div class="container">
         <div class="forum-headline forum-panel">
             <h5 class="float-left">Topic Title <span>Short topic description goes here.</span></h5>
+            
             <a class="btn btn-primary btn-shadow float-right" href="<?= $this->Url->build(['controller' => 'Forum', 'action' => 'createTopic']) ?>" role="button">New topic <i class="fa fa-plus"></i></a>
         </div>
         <div class="forum">
@@ -13,28 +21,33 @@
                 <div style="width: 7%">Views</div>
                 <div style="width: 20%">Most Recent</div>
             </div>
-            <div class="forum-group">
-                <div class="forum-row">
-                    <div class="forum-icon">
-                        <span class="badge badge-warning"><i class="fa fa-thumb-tack"></i></span>
-                        <i class="fa fa-comments"></i>
-                    </div>
-                    <div class="forum-title">
-                        <h4><a href="<?= $this->Url->build(['controller'=>'Forum','action'=>'viewTopic','df']) ?>">Can't remember the title of a game</a></h4>
-                        <p>by Venom on June 2, 2017</p>
-                    </div>
-                    <div class="forum-thread">57</div>
-                    <div class="forum-thread">405</div>
-                    <div class="forum-latest">
-                        <a href="profile.html"><img src="img/user/user-2.jpg" alt=""></a>
-                        <div>
-                            <h5><a href="forum-post.html">Elizabeth</a></h5>
-                            <span>June 23, 2017</span>
+           
+            <?php foreach ($posts as $post):?>              
+                <div class="forum-group">              
+                    <div class="forum-row">
+                        <div class="forum-icon">
+                            <span class="badge badge-warning"><i class="fa fa-thumb-tack"></i></span>
+                            <i class="fa fa-comments"></i>
+                        </div>
+                        <div class="forum-title">
+                            <h4><a href="<?= $this->Url->build(['controller'=>'Forum','action'=>'viewTopic',$post->PostSlug]) ?>"><?= h($post->PostTitle) ?></a></h4>
+                            <p>by <?=h($post->PostAuthor)?> on <?=h($post->PostDate)?></p>
+                           
+                        </div>
+                        <div class="forum-thread">57</div>
+                        <div class="forum-thread">405</div>
+                        <div class="forum-latest">
+                            <a href="profile.html"><img src="img/user/user-2.jpg" alt=""></a>
+                            <div>
+                                <h5><a href="forum-post.html"><?=h($post->PostAuthor)?></a></h5>
+                                <span><?=h($post->PostDate)?></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="forum-group">
+            <?php endforeach; ?>
+                
+            <!-- <div class="forum-group">
                 <div class="forum-row">
                     <div class="forum-icon">
                         <span class="badge badge-primary"><i class="fa fa-thumb-tack"></i></span>
@@ -234,14 +247,14 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="forum-footer">
+            </div> -->
+            <!-- <div class="forum-footer">
                 <div></div>
                 <div>Topic</div>
                 <div>Replies</div>
                 <div>Views</div>
                 <div>Most Recent</div>
-            </div>
+            </div> -->
         </div>
         <nav aria-label="Page navigation">
             <ul class="pagination">

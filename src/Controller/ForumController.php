@@ -3,8 +3,9 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Controller\AuthController;
+use Cake\Utility\Inflector;
 /**
- * Posts Controller
+ * Forum Controller
  *
  * @property \App\Model\Table\PostsTable $Posts
  *
@@ -14,12 +15,18 @@ class ForumController extends AppController
 {   
    
     public function index(){
-        $posts = $this->paginate($this->Posts);
-        $this->set(compact('posts'));
+        
     }
 
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
     public function forumTopic($slug){
-        
+        $this->loadModel('Posts');
+        $posts = $this->Posts->find('all');
+        $this->set(compact('posts'));
     }
 
     public function createTopic(){
@@ -30,6 +37,7 @@ class ForumController extends AppController
             $post->PostDate = date("Y-m-d H:i:s",strtotime($this->request->getData('PostDate')));
              // *chua hien chinh xac gio`*
             $post->PostAuthor = $this->getRequest()->getSession()->read('Auth.User.Username');
+            $post->PostSlug = Inflector::slug($this->request->getData('PostDesc'));;
             if( $post->PostAuthor==null ){
                 $this->Flash->error(__('Vui lòng đăng nhập để tạo bài viết'));
                 return $this->redirect(['controller'=>'Users','action'=>'login']);
@@ -45,6 +53,8 @@ class ForumController extends AppController
     }
 
     public function viewTopic($slug){
-
+        $this->loadModel('Posts');       
+        $post = $this->Posts->get(['slug'=>$slug]);    
+        $this->set('post', $post);
     }
 }

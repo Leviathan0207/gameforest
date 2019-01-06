@@ -17,7 +17,7 @@
                     <li class="nav-item"><a class="nav-link" href="#options" aria-controls="options" role="tab" data-toggle="tab">Options</a></li>
                 </ul>
                 <?= $this->Flash->render() ?>
-                <?= $this->Form->create($post) ?>
+                <?= $this->Form->create($post,['id'=>'myForm']) ?>
                     <div class="tab-content p-t-20">
                         <div class="tab-pane active" id="forum" role="tabpanel">
                             <!-- form -->                                
@@ -37,9 +37,9 @@
                                 </div>                                                 
                                 <div class="form-group">
                                     <label for="description">Content</label>
-                                    <?= $this->Form->input('PostContent',['id'=>'summernote','type'=>'text','class'=>'form-control','placeholder'=>'Nội dung','label'=>false]);?> 
+                                    <?= $this->Form->input('PostContent',['id'=>'summernote','type'=>'text','class'=>'form-control','placeholder'=>'Nội dung','label'=>false,'required'=>false]);?> 
                                     <small class="form-text">Others will se when reach your topic (max 50 character).</small>
-                                </div>                
+                                </div>                                         
                         </div>
                         <div class="tab-pane" id="options" role="tabpanel">
                             <div class="form-group row">
@@ -67,7 +67,7 @@
                         <div class="m-t-30">
                             <button class="btn btn-primary btn-rounded btn-shadow float-right" type="submit" name="save">Submit</button>
                         </div>  
-                    </div>
+                    </div>                   
                 <?= $this->Form->end(); ?>      
             </div>
         </div>
@@ -78,14 +78,20 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         $('#summernote').summernote({
-        height: 200,
-        styleTags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-        focus:true,
+            height: 200,
+            styleTags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+            focus:true
         });
-         
+
+        $(document).on('submit','#myForm',function(){
+            $("#summernote").val($("#summernote").summernote("code"));
+        });
+
         $(".js-example-basic").select2();
         $(".flatpickr").flatpickr();
         var elem = document.querySelector('.js-switch');
         var init = new Switchery(elem);
     })
+
+    
 </script>

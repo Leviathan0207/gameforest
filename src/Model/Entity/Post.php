@@ -13,6 +13,7 @@ use Cake\ORM\Entity;
  * @property string $PostContent
  * @property string $PostDesc
  * @property string $PostThread
+ * @property string $PostSlug
  */
 class Post extends Entity
 {
@@ -32,6 +33,7 @@ class Post extends Entity
         'PostAuthor' => true,
         'PostContent' => true,
         'PostDesc' => true,
-        'PostThread' => true
+        'PostThread' => true,
+        'PostSlug' => true
     ];
 }
