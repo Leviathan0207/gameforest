@@ -23,10 +23,26 @@ class ForumController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function forumTopic($slug){
+    public function forumTopic(){
         $this->loadModel('Posts');
         $posts = $this->Posts->find('all');
         $this->set(compact('posts'));
+    }
+
+    public function stripUnicode($str){
+        if(!$str) return false;
+         $unicode = array(
+            'a'=>'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
+            'd'=>'đ',
+            'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
+            'i'=>'í|ì|ỉ|ĩ|ị',
+            'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
+            'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
+            'y'=>'ý|ỳ|ỷ|ỹ|ỵ',
+         );
+      foreach($unicode as $nonUnicode=>$uni) 
+        $str = preg_replace("/($uni)/i",$nonUnicode,$str);
+      return $str;
     }
 
     public function createTopic(){
@@ -37,14 +53,19 @@ class ForumController extends AppController
             $post->PostDate = date("Y-m-d H:i:s",strtotime($this->request->getData('PostDate')));
              // *chua hien chinh xac gio`*
             $post->PostAuthor = $this->getRequest()->getSession()->read('Auth.User.Username');
-            $post->PostSlug = Inflector::slug($this->request->getData('PostDesc'));;
+            $lettersNumberSpacesHypens = '/[^\p{L}\p{N}\s]/u';
+            $spaceDuplicateHypens = '/[\-\s]+/';          
+            $post->PostSlug = preg_replace($lettersNumberSpacesHypens,'',mb_strtolower($this->request->getData('PostDesc')));
+            $post->PostSlug = ForumController::stripUnicode($post->PostSlug);           
+            $post->PostSlug = preg_replace($spaceDuplicateHypens,'-', $post->PostSlug);
+            $post->PostSlug = trim($post->PostSlug,'-');
             if( $post->PostAuthor==null ){
                 $this->Flash->error(__('Vui lòng đăng nhập để tạo bài viết'));
                 return $this->redirect(['controller'=>'Users','action'=>'login']);
             }
             else if ( $this->Posts->save($post)) {
                 $this->Flash->success(__('The post has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'forumTopic']);
             }
             $this->Flash->error(__('The post could not be saved. Please, try again.'));
             debug($post);
@@ -52,9 +73,15 @@ class ForumController extends AppController
         $this->set(compact('post'));
     }
 
+
+    
+
     public function viewTopic($slug){
         $this->loadModel('Posts');       
-        $post = $this->Posts->get(['slug'=>$slug]);    
+        $post = $this->Posts->get($slug, [
+            'contain' => ['PostSlug']
+        ]);
+
         $this->set('post', $post);
     }
 }
