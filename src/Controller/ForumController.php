@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Controller\AuthController;
 use Cake\Utility\Inflector;
+use Cake\ORM\TableRegistry;
 /**
  * Forum Controller
  *
@@ -47,7 +48,7 @@ class ForumController extends AppController
 
     public function createTopic(){
         $this->loadModel('Posts');
-        $post = $this->Posts->newEntity();
+        $post = $this->Posts->newEntity();      
         if ($this->request->is('post')) {
             $post = $this->Posts->patchEntity($post, $this->request->getData());
             $post->PostDate = date("Y-m-d H:i:s",strtotime($this->request->getData('PostDate')));
@@ -59,29 +60,33 @@ class ForumController extends AppController
             $post->PostSlug = ForumController::stripUnicode($post->PostSlug);           
             $post->PostSlug = preg_replace($spaceDuplicateHypens,'-', $post->PostSlug);
             $post->PostSlug = trim($post->PostSlug,'-');
+            ForumController::checkExist($post->PostSlug,$post); 
             if( $post->PostAuthor==null ){
                 $this->Flash->error(__('Vui lòng đăng nhập để tạo bài viết'));
                 return $this->redirect(['controller'=>'Users','action'=>'login']);
-            }
+            }                
             else if ( $this->Posts->save($post)) {
                 $this->Flash->success(__('The post has been saved.'));
                 return $this->redirect(['action' => 'forumTopic']);
             }
             $this->Flash->error(__('The post could not be saved. Please, try again.'));
-            debug($post);
         }
         $this->set(compact('post'));
     }
 
-
-    
+    public function checkExist($slug,$post){
+        $this->loadModel('Posts');     
+        $query = $this->Posts->find()->where(['PostSlug ='=>$slug])->first();
+        if($query!=null){               
+            $identity = mt_rand(1,999999);              
+            $post->PostSlug = $post->PostSlug.'-'.$identity;
+        }   
+    }
 
     public function viewTopic($slug){
-        $this->loadModel('Posts');       
-        $post = $this->Posts->get($slug, [
-            'contain' => ['PostSlug']
-        ]);
-
+        $this->loadModel('Posts');      
+        $post = $this->Posts->find()->where(['PostSlug ='=>$slug])->first();
+        debug($post);
         $this->set('post', $post);
     }
 }

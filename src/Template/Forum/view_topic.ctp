@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Post $post
+ */
+?>
 <?= $this->Element('Page/breadcrumbs') ?>
 <section class="p-t-40">
     <div class="container">
@@ -15,11 +21,12 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="forum-post">
                     <div class="forum-header">
                         <div><a href="profile.html"><img src="<?=$this->Url->image('user/user-3.jpg')?>"></a></div>
                         <div>
-                            <h2 class="forum-title"><a href="profile.html">Clark</a></h2>
+                            <h2 class="forum-title"><a href="profile.html"><?=$post->PostTitle?></a></h2>
                             <div class="forum-meta">
                                 <span>346 posts</span>
                                 <span>Moderator</span>
@@ -27,7 +34,7 @@
                         </div>
                         <div>
                             #1
-                            <span>July 28, 2017</span>
+                            <span><?=$post->PostDate?></span>
                         </div>
                     </div>
                     <div class="forum-body">
